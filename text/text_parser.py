@@ -74,23 +74,11 @@ def padding_(input_, maxlen = None, pad_val = 0):
   
   return sent_
   
-def get_data(path, padding = True, maxlen_pad = None, pad_val = 0):
+def get_data_from_sentences(sentences, padding = True, maxlen_pad = None, pad_val = 0):
   '''
-  This function will process the data in path
-  Args:
-    path: the path to the file
-    padding: whether to do padding
-    maxlen_pad: maximum length to pad with
-    pad_val: the value to be padded with
-  Returns:
-    sentences: the processed sentences
-    word2id: dictionary which has ID for every word
-    id2word: dicitonary which has word for every ID
+  This function processes the data if it is already given the sentences
+  Args and Return same as get_data_from_path
   '''
-  # get sentences
-  sentences = open(path)
-  sentences = sentences.readlines()
-  
   # make the vocabulary and convert sentences to tokens
   vocab, sentences = vocab_maker(sentences)
   
@@ -108,5 +96,26 @@ def get_data(path, padding = True, maxlen_pad = None, pad_val = 0):
   if padding == True:
     sentences = padding_(input_ = sentences, maxlen = maxlen_pad, pad_val = pad_val)
     return sentences, word2id, id2word
+  
+  return sentences, word2id, id2word
+  
+def get_data_from_path(path, padding = True, maxlen_pad = None, pad_val = 0):
+  '''
+  This function will process the data in path
+  Args:
+    path: the path to the file
+    padding: whether to do padding
+    maxlen_pad: maximum length to pad with
+    pad_val: the value to be padded with
+  Returns:
+    sentences: the processed sentences
+    word2id: dictionary which has ID for every word
+    id2word: dicitonary which has word for every ID
+  '''
+  # get sentences
+  sentences = open(path)
+  sentences = sentences.readlines()
+
+  sentences, word2id, id2word = get_data_from_sentences(sentences, padding, maxlen_pad, pad_val)
   
   return sentences, word2id, id2word
